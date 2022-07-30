@@ -3,6 +3,7 @@ import seaborn as sns
 import numpy as np
 from mpl_toolkits.mplot3d import axes3d
 from Parameters import *
+import os
 
 def plot_n_save(n, data):
     if n%out_step == 0:
@@ -14,7 +15,8 @@ def plot_n_save(n, data):
         x = np.arange(0, nx, 1)
         y = np.arange(0, ny, 1)
         X,Y = np.meshgrid(x,y)
-        matrix=np.array([data[n] for i in range(601)])
+        # matrix=np.array([data[n] for i in range(601)])
+        matrix=data[n]
         ax = fig.add_subplot(111, projection='3d')
         ax.set_xlim(0,nx)
         ax.set_ylim(0,ny)
@@ -22,8 +24,10 @@ def plot_n_save(n, data):
         ax.set_xlabel('x (km)', fontsize = 15)
         ax.set_ylabel('y (km)', fontsize = 15)
         ax.set_zlabel('u (mag)', fontsize = 15)
-        ax.set_title(title, fontsize = 15)
-        ax.plot_surface(X, Y, matrix, cmap='viridis', edgecolor='none')
+        ax.set_title('t='+str(n*dt/60/60)+' hrs', fontsize = 15)
+        surf = ax.plot_surface(X, Y, matrix, cmap='viridis', edgecolor='none', vmin = 0., vmax = 1.)
+        ax.view_init(90, 0)
+        fig.colorbar(surf, ax = ax, shrink = 0.7, aspect = 10) 
         # ax = fig.add_subplot()
         # ax.set_xlim(0,600)
         # ax.set_ylim(-0.5,1.5)
